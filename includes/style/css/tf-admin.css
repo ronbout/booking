@@ -1,0 +1,144 @@
+/* tf-admin.css
+	 For the user pages and the venue/products/posts pages
+*/
+body.woocommerce_page_view-venues .wp-list-table .column-products,
+body.woocommerce_page_view-venues .wp-list-table .column-redeemed_qty,
+body.woocommerce_page_view-venues .wp-list-table .column-order_cnt,
+body.woocommerce_page_view-venues .wp-list-table .column-order_qty,
+body.woocommerce_page_view-venues .wp-list-table .column-commission,
+body.woocommerce_page_view-venues .wp-list-table .column-vat,
+body.woocommerce_page_view-venues .wp-list-table .column-gross_revenue,
+body.woocommerce_page_view-venues .wp-list-table .column-net_payable,
+body.woocommerce_page_view-venues .wp-list-table .column-paid_amount,
+body.woocommerce_page_view-venues .wp-list-table .column-balance_due {
+  text-align: right;
+}
+body.woocommerce_page_view-venues .wp-list-table .column-products a > span:first-child,
+body.woocommerce_page_view-venues .wp-list-table .column-redeemed_qty a > span:first-child,
+body.woocommerce_page_view-venues .wp-list-table .column-order_cnt a > span:first-child,
+body.woocommerce_page_view-venues .wp-list-table .column-order_qty a > span:first-child,
+body.woocommerce_page_view-venues .wp-list-table .column-commission a > span:first-child,
+body.woocommerce_page_view-venues .wp-list-table .column-vat a > span:first-child,
+body.woocommerce_page_view-venues .wp-list-table .column-gross_revenue a > span:first-child,
+body.woocommerce_page_view-venues .wp-list-table .column-net_payable a > span:first-child,
+body.woocommerce_page_view-venues .wp-list-table .column-paid_amount a > span:first-child,
+body.woocommerce_page_view-venues .wp-list-table .column-balance_due a > span:first-child {
+  width: 80%;
+}
+
+.tf-alignright {
+  text-align: right !important;
+}
+
+.tf-aligncenter {
+  text-align: center !important;
+}
+
+.tf-alignleft {
+  text-align: left !important;
+}
+
+body.woocommerce_page_view-order-transactions .wp-list-table .column-net_cost,
+body.woocommerce_page_view-order-transactions .wp-list-table .column-commission,
+body.woocommerce_page_view-order-transactions .wp-list-table .column-vat,
+body.woocommerce_page_view-order-transactions .wp-list-table .column-gross_income,
+body.woocommerce_page_view-order-transactions .wp-list-table .column-venue_due {
+  text-align: right;
+}
+body.woocommerce_page_view-order-transactions .wp-list-table .column-net_cost a > span:first-child,
+body.woocommerce_page_view-order-transactions .wp-list-table .column-commission a > span:first-child,
+body.woocommerce_page_view-order-transactions .wp-list-table .column-vat a > span:first-child,
+body.woocommerce_page_view-order-transactions .wp-list-table .column-gross_income a > span:first-child,
+body.woocommerce_page_view-order-transactions .wp-list-table .column-venue_due a > span:first-child {
+  width: 80%;
+}
+
+body.woocommerce_page_view-payments .wp-list-table .column-amount {
+  text-align: right;
+}
+body.woocommerce_page_view-payments .wp-list-table .column-amount a > span:first-child {
+  width: 80%;
+}
+
+body.woocommerce_page_view-payments .dashicons.print-invoice-btn,
+body.woocommerce_page_view-payments .dashicons.display-details-btn,
+body.woocommerce_page_view-venues .dashicons.print-invoice-btn,
+body.woocommerce_page_view-venues .dashicons.display-details-btn {
+  font-size: 30px;
+  cursor: pointer;
+}
+body.woocommerce_page_view-payments .payment-details-container,
+body.woocommerce_page_view-payments .venue-details-container,
+body.woocommerce_page_view-venues .payment-details-container,
+body.woocommerce_page_view-venues .venue-details-container {
+  border: 2px solid lightblue;
+  border-radius: 12px;
+  width: 90%;
+  margin: auto;
+  padding: 8px 20px;
+}
+body.woocommerce_page_view-payments table.widefat,
+body.woocommerce_page_view-venues table.widefat {
+  border: none;
+}
+
+#tf_post_body #reset-btn {
+  background-color: darkorange;
+  color: white;
+}
+#tf_post_body .clear-filter {
+  margin-right: 6px;
+}
+
+.tf_order_trans_update_entry {
+  padding: 6px;
+  display: flex;
+}
+.tf_order_trans_update_entry #trans_update_start_date,
+.tf_order_trans_update_entry #run-build-trans,
+.tf_order_trans_update_entry #update_trans_date_label {
+  margin: 8px;
+  padding: 8px;
+  height: 35px;
+  line-height: normal;
+  min-height: 0px;
+}
+.tf_order_trans_update_entry #update_trans_date_label {
+  font-size: 16px;
+}
+.tf_order_trans_update_entry #trans_update_start_date,
+.tf_order_trans_update_entry #run-build-trans {
+  border: 1px solid #8c8f94;
+  border-radius: 4px;
+  font-size: 13px;
+}
+.tf_order_trans_update_entry #run-build-trans {
+  background-color: #0073aa;
+  color: white;
+  cursor: pointer;
+}
+
+body.woocommerce_page_wc-settings #run-rebuild-trans {
+  background-color: #e52b50;
+  color: white;
+}
+body.woocommerce_page_wc-settings #run-rebuild-trans:hover {
+  background-color: #fd5c63;
+  color: white;
+}
+body.woocommerce_page_wc-settings .spinner.tf-spinner {
+  float: none;
+}
+body.woocommerce_page_wc-settings #tf-trans-cron-toggle {
+  margin: 6px 0 0 12px;
+}
+body.woocommerce_page_wc-settings #trans-cron-toggle-label {
+  margin: 12px;
+  font-size: 20px;
+  vertical-align: text-top;
+}
+body.woocommerce_page_wc-settings #tf-financial-cron-next-time {
+  font-weight: bold;
+}
+
+/*# sourceMappingURL=tf-admin.css.map */
