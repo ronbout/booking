@@ -3,18 +3,15 @@
 
 defined('ABSPATH') or die('Direct script access disallowed.');
 //* Enqueue Jobs Page Stylesheets and Scripts
-// add_action('wp_enqueue_scripts', 'taste_venue_load_resources');
 
-// function taste_venue_load_resources() {
+add_action('wp_enqueue_scripts', 'taste_booking_load_resources');
 
-// 	if ( is_single("venue-manager") ) {		
-// 		wp_enqueue_style( 'bootstrap-css', 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css', array() );
+function taste_booking_load_resources() {
 
-// 		wp_enqueue_style( 'taste-venue-css', TASTE_PLUGIN_INCLUDES_URL."/css/thetaste-venue.css" , array() );
-// 		wp_enqueue_script( 'taste-venue-js', TASTE_PLUGIN_INCLUDES_URL . '/js/thetaste-venue.js', array( 'jquery' ), false, true);
-// 		//wp_enqueue_script( 'taste-venue-js', TASTE_PLUGIN_INCLUDES_URL . '/js/thetaste-venue.min.js', array( 'jquery' ), false, true);
-// 	}
-// }
+	wp_enqueue_style( 'taste-booking-css', TBOOKING_PLUGIN_INCLUDES_URL."/style/css/tbooking.css" , array() );
+	// wp_enqueue_script( 'taste-venue-js', TASTE_PLUGIN_INCLUDES_URL . '/js/thetaste-venue.js', array( 'jquery' ), false, true);
+	//wp_enqueue_script( 'taste-venue-js', TASTE_PLUGIN_INCLUDES_URL . '/js/thetaste-venue.min.js', array( 'jquery' ), false, true);
+}
 
 // add_action('wp_enqueue_scripts', 'jl_localize_script');
 

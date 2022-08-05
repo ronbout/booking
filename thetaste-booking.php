@@ -13,48 +13,52 @@
 
 defined('ABSPATH') or die('Direct script access disallowed.');
 
-// define('TFINANCIAL_PLUGIN_PATH', plugin_dir_path(__FILE__));
-// define('TFINANCIAL_PLUGIN_URL', plugin_dir_url(__FILE__));
-// define('TFINANCIAL_PLUGIN_INCLUDES', TFINANCIAL_PLUGIN_PATH.'includes');
-// define('TFINANCIAL_PLUGIN_INCLUDES_URL', TFINANCIAL_PLUGIN_URL.'includes');
-// define('TFINANCIAL_PLUGIN_LOGS_PATH', TFINANCIAL_PLUGIN_PATH.'logs');
+define('TBOOKING_PLUGIN_PATH', plugin_dir_path(__FILE__));
+define('TBOOKING_PLUGIN_URL', plugin_dir_url(__FILE__));
+define('TBOOKING_PLUGIN_INCLUDES', TBOOKING_PLUGIN_PATH.'includes');
+define('TBOOKING_PLUGIN_INCLUDES_URL', TBOOKING_PLUGIN_URL.'includes');
 
 
-// require_once TFINANCIAL_PLUGIN_INCLUDES.'/activation-deactivation.php';
+require_once TBOOKING_PLUGIN_INCLUDES.'/activation-deactivation.php';
 
-// register_activation_hook( __FILE__, 'tfinancial_activation' );
-// register_deactivation_hook( __FILE__, 'tfinancial_deactivation' );
+register_activation_hook( __FILE__, 'tbooking_activation' );
+register_deactivation_hook( __FILE__, 'tbooking_activation' );
 
+require_once TBOOKING_PLUGIN_INCLUDES.'/calendar/display-calendar-shortcode.php';
+require_once TBOOKING_PLUGIN_INCLUDES.'/calendar/BasicCalendar.php';
+
+// add shortcode definitions
+function tb_add_shortcodes() {
+	add_shortcode("BOOKING-CALENDAR", "display_calendar_shortcode");
+}
+add_action("init", "tb_add_shortcodes");
+
+add_action('woocommerce_after_single_product_summary',function(){
+  ?>
+    <h2>** Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloribus fuga totam soluta aut minus architecto aliquam inventore asperiores quaerat dolores? **</h2>
+  <?php
+}
+);
 // if (is_admin()) {
 // 	/*
-// 	require_once TFINANCIAL_PLUGIN_INCLUDES.'/admin/list-products-by-venue.php';
+// 	require_once TBOOKING_PLUGIN_INCLUDES.'/admin/list-products-by-venue.php';
 // 	VenueUserFields::get_instance();
 // 	*/
-// 	require_once TFINANCIAL_PLUGIN_INCLUDES.'/admin/admin-enqueues.php';
-// 	require_once TFINANCIAL_PLUGIN_INCLUDES.'/admin/list-pages/Taste_list_table.php';
-// 	require_once TFINANCIAL_PLUGIN_INCLUDES.'/admin/list-pages/transactions/tf-view-order-trans-page.php';
-// 	require_once TFINANCIAL_PLUGIN_INCLUDES.'/admin/list-pages/venues/tf-view-venues-page.php';
-// 	require_once TFINANCIAL_PLUGIN_INCLUDES.'/admin/list-pages/payments/tf-view-payments-page.php';
-// 	require_once TFINANCIAL_PLUGIN_INCLUDES.'/admin/tf-admin-menus.php';
-// 	require_once TFINANCIAL_PLUGIN_INCLUDES.'/admin/wc-settings/wc-settings.php';
+// 	require_once TBOOKING_PLUGIN_INCLUDES.'/admin/admin-enqueues.php';
+// 	require_once TBOOKING_PLUGIN_INCLUDES.'/admin/list-pages/Taste_list_table.php';
+// 	require_once TBOOKING_PLUGIN_INCLUDES.'/admin/list-pages/transactions/tf-view-order-trans-page.php';
+// 	require_once TBOOKING_PLUGIN_INCLUDES.'/admin/list-pages/venues/tf-view-venues-page.php';
+// 	require_once TBOOKING_PLUGIN_INCLUDES.'/admin/list-pages/payments/tf-view-payments-page.php';
+// 	require_once TBOOKING_PLUGIN_INCLUDES.'/admin/tf-admin-menus.php';
+// 	require_once TBOOKING_PLUGIN_INCLUDES.'/admin/wc-settings/wc-settings.php';
 // }
 
 // // enqueues 
-// //require_once TFINANCIAL_PLUGIN_INCLUDES.'/enqueues.php';
-// require_once TFINANCIAL_PLUGIN_INCLUDES.'/ajax/ajax-functions.php';
-// require_once TFINANCIAL_PLUGIN_INCLUDES.'/functions.php';
-// require_once TFINANCIAL_PLUGIN_INCLUDES.'/real-time-trans-build.php';
-// require_once TFINANCIAL_PLUGIN_INCLUDES.'/trans-insert-functions.php';
-// require_once TFINANCIAL_PLUGIN_INCLUDES.'/build-trans-table-bulk.php';
+require_once TBOOKING_PLUGIN_INCLUDES.'/enqueues.php';
+// require_once TBOOKING_PLUGIN_INCLUDES.'/ajax/ajax-functions.php';
+require_once TBOOKING_PLUGIN_INCLUDES.'/functions.php';
 
 // /* some helpful CONSTANTS */
-// define('TASTE_PAYMENT_STATUS_PAID', 1);
-// define('TASTE_PAYMENT_STATUS_ADJ', 2);
-// define('TASTE_PAYMENT_STATUS_PENDING', 3);
-// define('TASTE_PAYMENT_STATUS_PROCESSING', 4);
-// define('TASTE_DEFAULT_PAYMENT_STATUS', TASTE_PAYMENT_STATUS_PAID);
-// define('TASTE_PBO_NET_PAYABLE_THRESHOLD', get_option('tf_financials_rounding_threshold'));
-// define('TASTE_PBO_BALANCE_FILTER_THRESHOLD', 0);
 // define('TASTE_TRANS_CRON_HOOK', 'taste_trans_cron_event');
 
 // /**
@@ -99,26 +103,6 @@ defined('ABSPATH') or die('Direct script access disallowed.');
 // }
 // add_filter( 'woocommerce_get_price_html', 'taste_hide_giftcert_price', 10, 2 );
 
-//  /***********************************************************
-//  * Set up Order Auto-complete when status set to processing
-//  ************************************************************/
-// add_action('woocommerce_order_status_changed', 'tf_auto_complete_by_payment_method');
-
-// function tf_auto_complete_by_payment_method($order_id) {
-//   if ( ! $order_id ) {
-// 		return;
-// 	}
-// 	global $product;
-// 	$order = wc_get_order( $order_id );
-
-// 	if ('processing' == $order->data['status']) {
-// 				$payment_method = $order->get_payment_method();
-// 				if (! in_array($payment_method, array("cod", "cheque"))) {
-// 					$order->update_status( 'completed' );
-// 				}
-			
-// 	}
-// }
   
 //  /*************************************************
 //  * Set up nightly cron job to update trans table
@@ -149,6 +133,6 @@ defined('ABSPATH') or die('Direct script access disallowed.');
 
 // function tf_update_trans_table() {
 	
-// 	require_once TFINANCIAL_PLUGIN_INCLUDES.'/build-trans-bulk-cron.php';
+// 	require_once TBOOKING_PLUGIN_INCLUDES.'/build-trans-bulk-cron.php';
 	
 // }

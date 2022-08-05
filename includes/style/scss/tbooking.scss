@@ -1,2 +1,47 @@
 /* tbooking.scss
 */
+.tsd-basic-calendar-table {
+  border: 1px solid black;
+  border-collapse: collapse;
+
+  th,
+  td {
+    border: 1px solid black;
+    width: 80px;
+    height: 60px;
+    padding: 6px;
+  }
+
+  td {
+    background-color: yellow;
+    color: black;
+  }
+
+  .tsd-month-day-div {
+    position: relative;
+    overflow: auto;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .tsd-day-of-month-display {
+    position: absolute;
+    right: 0;
+    top: 0;
+    font-size: 14px;
+  }
+
+  .tsd-daily-display {
+    font-size: 16px;
+    padding-top: 6px;
+  }
+
+  .tsd-non-month-day {
+    background-color: lightgray;
+    color: darkgray;
+  }
+}
