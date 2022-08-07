@@ -33,17 +33,8 @@ function tb_add_shortcodes() {
 }
 add_action("init", "tb_add_shortcodes");
 
-add_action('woocommerce_after_single_product_summary',function(){
-  ?>
-    <h2>** Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloribus fuga totam soluta aut minus architecto aliquam inventore asperiores quaerat dolores? **</h2>
-  <?php
-}
-);
-// if (is_admin()) {
-// 	/*
-// 	require_once TBOOKING_PLUGIN_INCLUDES.'/admin/list-products-by-venue.php';
-// 	VenueUserFields::get_instance();
-// 	*/
+if (is_admin()) {
+	require_once TBOOKING_PLUGIN_INCLUDES.'/metabox/product-metabox.php';
 // 	require_once TBOOKING_PLUGIN_INCLUDES.'/admin/admin-enqueues.php';
 // 	require_once TBOOKING_PLUGIN_INCLUDES.'/admin/list-pages/Taste_list_table.php';
 // 	require_once TBOOKING_PLUGIN_INCLUDES.'/admin/list-pages/transactions/tf-view-order-trans-page.php';
@@ -51,7 +42,7 @@ add_action('woocommerce_after_single_product_summary',function(){
 // 	require_once TBOOKING_PLUGIN_INCLUDES.'/admin/list-pages/payments/tf-view-payments-page.php';
 // 	require_once TBOOKING_PLUGIN_INCLUDES.'/admin/tf-admin-menus.php';
 // 	require_once TBOOKING_PLUGIN_INCLUDES.'/admin/wc-settings/wc-settings.php';
-// }
+}
 
 // // enqueues 
 require_once TBOOKING_PLUGIN_INCLUDES.'/enqueues.php';
