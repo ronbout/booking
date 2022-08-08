@@ -3,8 +3,7 @@
 /*
     Plugin Name: TheTaste Booking Plugin
     Plugin URI: http://thetaste.ie
-    Description: Various functionalities for theTaste.ie hotel
-												booking system
+    Description: Various functionalities for theTaste.ie hotel booking system
 		Version: 1.0.0
 		Date: 7/31/2022
     Author: Ron Boutilier
@@ -46,29 +45,32 @@ if (is_admin()) {
 
 // // enqueues 
 require_once TBOOKING_PLUGIN_INCLUDES.'/enqueues.php';
-// require_once TBOOKING_PLUGIN_INCLUDES.'/ajax/ajax-functions.php';
+require_once TBOOKING_PLUGIN_INCLUDES.'/ajax/ajax-functions.php';
 require_once TBOOKING_PLUGIN_INCLUDES.'/functions.php';
 
 // /* some helpful CONSTANTS */
 // define('TASTE_TRANS_CRON_HOOK', 'taste_trans_cron_event');
 
-// /**
-//  * Page Templates setup code
-//  */
-// // set up page templates
-// function tfinancial_add_template ($templates) {
-// 	$templates['test-build-trans-bulk.php'] = 'Build Transaction Table';
-// 	return $templates;
-// 	}
-// add_filter ('theme_page_templates', 'tfinancial_add_template');
 
-// function tfinancial_redirect_page_template ($template) {
-// 	if (is_page_template('test-build-trans-bulk.php')) {
-// 		$template = plugin_dir_path( __FILE__ ).'page-templates/test-build-trans-bulk.php';
-// 	}
-// 	return $template;
-// }
-// add_filter ('page_template', 'tfinancial_redirect_page_template');
+/**
+ * Page Templates setup code
+ */
+// set up page templates
+function tbooking_add_template ($templates) {
+	$templates['test-build-booking-dates.php'] = 'Build Booking 30 Day Calendar';
+	return $templates;
+	}
+add_filter ('theme_page_templates', 'tbooking_add_template');
+
+function tbooking_redirect_page_template ($template) {
+	if (is_page_template('test-build-booking-dates.php')) {
+		$template = plugin_dir_path( __FILE__ ).'page-templates/test-build-booking-dates.php';
+	}
+	return $template;
+}
+add_filter ('page_template', 'tbooking_redirect_page_template');
+
+
 
 
 
