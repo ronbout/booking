@@ -43,6 +43,7 @@ function build_booking_dates_table($start_date) {
 	$avail_days = load_prod_booking_dates_table($prod_booking_info, $start_date);
 
 	if (false === $avail_days) {
+		echo "<h2>No available booking dates were found";
 		return;
 	}
 
@@ -52,6 +53,7 @@ function build_booking_dates_table($start_date) {
 		echo "<h2>No available booking dates were found";
 	}
 
+	return;
 }
 
 function get_prod_booking_info($prod_booking_rows) {
@@ -60,9 +62,15 @@ function get_prod_booking_info($prod_booking_rows) {
 		$booking_id = $pb_row['hotel_booking_id'];
 		$match_terms = unserialize($pb_row['match_terms']);
 		if (isset($prod_booking_info[$booking_id])) {
-			$prod_booking_info[$booking_id][] = $match_terms;
+			$prod_booking_info[$booking_id][] = array(
+				'product_id' => $pb_row['product_id'],
+				'match_terms' => $match_terms,
+			);
 		} else {
-			$prod_booking_info[$booking_id] = array ( $match_terms );
+			$prod_booking_info[$booking_id] = array(array(
+				'product_id' => $pb_row['product_id'],
+				'match_terms' => $match_terms,
+			));
 		}
 	}
 	return $prod_booking_info;
@@ -77,9 +85,9 @@ function load_prod_booking_dates_table($prod_booking_info, $start_date) {
 
 	// starting with start date, loop through the next 30 days
 	$date_i = date_create($start_date);
-	for ($day_cnt = 0; $day_cnt < 30; $day_cnt++) {
+	for ($day_cnt = 0; $day_cnt < 7; $day_cnt++) {
 		$sql_date = date_format($date_i, "Y-m-d");
-		echo "<p>cnt: $day_cnt  -> ", $sql_date, "</p>";
+		echo "<p>Day count: $day_cnt  -> ", $sql_date, "</p>";
 		// delete all records for this date to insert from latest api data
 
 		$sql = "
@@ -96,8 +104,8 @@ function load_prod_booking_dates_table($prod_booking_info, $start_date) {
 			return false;
 		}
 
-		// run api for all the hotel ids
-		$avail_dates = load_prod_booking_table_single_date($hotel_ids, $sql_date);
+		// run api for all the hotel ids and load table for this date
+		$avail_dates = load_prod_booking_table_single_date($prod_booking_info, $hotel_ids, $sql_date);
 		if (false === $avail_dates) {
 			echo "Error inserting booking data for date $sql_date";
 			die;
@@ -106,64 +114,89 @@ function load_prod_booking_dates_table($prod_booking_info, $start_date) {
 
     $date_i = date_add($date_i, date_interval_create_from_date_string("1 day"));
 	}
+
+	return $total_avail_dates;
 }
 
-function load_prod_booking_table_single_date($hotel_ids, $sql_date) {
+function load_prod_booking_table_single_date($prod_booking_info, $hotel_ids, $sql_date) {
 	global $wpdb;
 
 	$api_data = get_hotel_shopping_by_hotel_list($hotel_ids, $sql_date);
 
-	$hotel_rows = get_hotel_booking_data($api_data);
+	$hotel_rows = get_hotel_booking_data($api_data, $sql_date);
 
-	print_r($hotel_rows);
-	die;
+	// echo '<pre>';
+	// print_r($hotel_rows);
+	
+	// echo '<pre>';
+	// die;
 
-	return 0;
+	$match_cnt = 0;
+
+	foreach($prod_booking_info as $hotel_id => $prod_rows) {
+		foreach ($prod_rows as $prod_row) {
+			$product_id = $prod_row['product_id'];
+			$match_terms = $prod_row['match_terms'];
+      $rtype = $match_terms['rtype'];
+      $rcat = $match_terms['rcat'];
+      $bedtype = $match_terms['bedtype'];
+      $rdesc = $match_terms['rdesc'];
+			if (!$rtype && !$rcat && !$bedtype && !rdesc) {
+				continue;
+			}
+			$hotel_offers = $hotel_rows[$hotel_id];
+			foreach($hotel_offers as $hotel_offer) {
+				if ($rtype) {
+					if ($rtype != $hotel_offer['rtype']) {
+						continue;
+					}
+				}
+				if ($rcat) {
+					if ($rcat != $hotel_offer['rcat']) {
+						continue;
+					}
+				}
+				if ($bedtype) {
+					if ($bedtype != $hotel_offer['bedtype']) {
+						continue;
+					}
+				}
+				if ($rdesc) {
+					if (false === strpos($hotel_offer['bedtype'], $bedtype)) {
+						continue;
+					}
+				}
+				// must have been matched
+				$db_result = insert_prod_booking_date_table($product_id, $hotel_offer);
+				if (false === $db_result) {
+					echo "Error insert product booking date info";
+					die;
+				}
+				$match_cnt++;
+				break;
+			}
+		}
+	}
+	return $match_cnt;
 
 }
 
-function get_hotel_booking_data($api_data) {
+function get_hotel_booking_data($api_data, $sql_date) {
   $hotels_data = $api_data['data'];
   $hotel_rows = array();
 
   foreach($hotels_data as $hotel_data) {
     $hotel_id = $hotel_data['hotel']['hotelId'];
+		$available = $hotel_data['available'];
+    $offers = get_offer_info( $hotel_data['offers'], $available, $sql_date );
 
-    $offers = get_offer_info( $hotel_data['offers']);
-    $hotel_offer_count = count($offers);
-
-    $trows = array_reduce($offers, function($trows, $offer) {
-      $id = $offer['id'];
-      $rtype = $offer['rtype'];
-      $rcategory = $offer['rcategory'];
-      $rbeds = $offer['rbeds'];
-      $rbedtype = $offer['rbedtype'];
-      $desc = $offer['desc'];
-      $adults = $offer['adults'];
-      $price = $offer['price'];
-  
-      $trows .= "<tr>";
-      $trows .= "
-        <td>$id</td>
-        <td>$rtype</td>
-        <td>$rcategory</td>
-        <td>$rbeds</td>
-        <td>$rbedtype</td>
-        <td>$desc</td>
-        <td>$adults</td>
-        <td>$price</td>
-        ";
-      $trows .= "</tr>";
-      return $trows;
-    }, "");
-
-    $hotel_rows[$hotel_id] = array('offer_count' => $hotel_offer_count, 'trows' => $trows);
+    $hotel_rows[$hotel_id] = $offers;
   }
 
 	return $hotel_rows;
 }
 
-function get_offer_info($offers) {
+function get_offer_info($offers, $available, $sql_date) {
 	$offers_info = array();
 	foreach ($offers as $offer) {    
 		$id = $offer['id'];
@@ -175,16 +208,20 @@ function get_offer_info($offers) {
 		$desc = $room['description']['text'];
 		$adults = $offer['guests']['adults'];
 		$price = $offer['price']['total'];
+		$offer_api = $offer['self'];
 
 		$offers_info[] = array(
 			'id' => $id,
+			'available' => $available,
 			'rtype' => $rtype,
-			'rcategory' => $rcategory,
+			'rcat' => $rcategory,
 			'rbeds' => $rbeds,
-			'rbedtype' => $rbedtype,
-			'desc' => $desc,
+			'bedtype' => $rbedtype,
+			'rdesc' => $desc,
 			'adults' => $adults,
 			'price' => $price,
+			'offer_api' => $offer_api,
+			'offer_date' => $sql_date,
 		);
 	}
 
@@ -192,4 +229,24 @@ function get_offer_info($offers) {
 	$sort_column = array_column($offers_info, 'rtype');
 	array_multisort($sort_column, SORT_ASC, $offers_info);
 	return $offers_info;
+}
+
+function insert_prod_booking_date_table($product_id, $hotel_offer) {
+	global $wpdb;
+	// echo "<p>", $product_id, "</p>";
+	// echo "<pre>";
+	// print_r($hotel_offer);
+	// echo "</pre>";
+	$insert_table = "{$wpdb->prefix}taste_venue_product_booking_dates";
+
+	$insert_data = array( 
+		'product_id' => $product_id,
+		'room_date' => $hotel_offer['offer_date'],
+		'available_flag' => $hotel_offer['available'],
+		'booking_date_id' => $hotel_offer['id'],
+		'offer_api' => $hotel_offer['offer_api'],
+	);
+
+	$insert_format = array('%d', '%s', '%d', '%s', '%s');
+	return $wpdb->insert($insert_table, $insert_data, $insert_format);
 }
