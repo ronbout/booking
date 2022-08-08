@@ -69,7 +69,7 @@ class BasicCalendar {
 
 	public function set_day_colors($date_color_array) {
 		// $date_color_array =
-		// date_of_month => array( col, bk_color)
+		// date => array( col, bk_color)
 
 		foreach($date_color_array as $date => $colors) {
 			$week_wday = $this->date_to_week_day($date);
@@ -221,7 +221,10 @@ class BasicCalendar {
 		$this->first_of_next_month_info = getdate($tmp_timestamp);
 	}
 
-	protected function date_to_week_day($day_of_month) {
+	protected function date_to_week_day($dt) {
+		$tmp_dt = date_create($dt);
+		$dt_info = getdate($tmp_dt->getTimestamp());
+		$day_of_month = $dt_info['mday'];
 		$week = floor(($this->first_of_month_info['wday'] + $day_of_month) / 7);
 		$wday = ($this->first_of_month_info['wday'] + $day_of_month) % 7;
 		if (0 == $wday) {
