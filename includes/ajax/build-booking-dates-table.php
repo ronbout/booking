@@ -209,6 +209,7 @@ function get_offer_info($offers, $available, $sql_date) {
 		$adults = $offer['guests']['adults'];
 		$price = $offer['price']['total'];
 		$offer_api = $offer['self'];
+		$commission = isset($offer['commission']['percentage']) ? $offer['commission']['percentage'] : "no % found";
 
 		$offers_info[] = array(
 			'id' => $id,
@@ -222,6 +223,7 @@ function get_offer_info($offers, $available, $sql_date) {
 			'price' => $price,
 			'offer_api' => $offer_api,
 			'offer_date' => $sql_date,
+			'commission' => $commission,
 		);
 	}
 
