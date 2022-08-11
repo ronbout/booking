@@ -58,6 +58,8 @@ require_once TBOOKING_PLUGIN_INCLUDES.'/functions.php';
 // set up page templates
 function tbooking_add_template ($templates) {
 	$templates['test-build-booking-dates.php'] = 'Build Booking 30 Day Calendar';
+	$templates['deals.php'] = 'TheTaste Deals';
+	$templates['amadeus.php'] = 'Amadeus API Data';
 	return $templates;
 	}
 add_filter ('theme_page_templates', 'tbooking_add_template');
@@ -65,6 +67,12 @@ add_filter ('theme_page_templates', 'tbooking_add_template');
 function tbooking_redirect_page_template ($template) {
 	if (is_page_template('test-build-booking-dates.php')) {
 		$template = plugin_dir_path( __FILE__ ).'page-templates/test-build-booking-dates.php';
+	}
+	if (is_page_template('deals.php')) {
+		$template = plugin_dir_path( __FILE__ ).'page-templates/deals.php';
+	}
+	if (is_page_template('amadeus.php')) {
+		$template = plugin_dir_path( __FILE__ ).'page-templates/amadeus.php';
 	}
 	return $template;
 }

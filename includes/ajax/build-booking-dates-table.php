@@ -202,7 +202,7 @@ function get_offer_info($offers, $available, $sql_date) {
 		$id = $offer['id'];
 		$room = $offer['room'];
 		$rtype = $room['type'];
-		$rcategory = $room['typeEstimated']['category'];
+		$rcategory = isset($room['typeEstimated']['category']) ? $room['typeEstimated']['category'] : "n/a";
 		$rbeds = isset($room['typeEstimated']['beds']) ? $room['typeEstimated']['beds'] : "n/a";
 		$rbedtype = isset($room['typeEstimated']['bedType']) ? $room['typeEstimated']['bedType'] : "n/a";
 		$desc = $room['description']['text'];

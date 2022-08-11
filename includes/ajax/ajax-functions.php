@@ -3,7 +3,7 @@
 defined('ABSPATH') or die('Direct script access disallowed.');
 
 
-function tf_ajax_build_booking_dates() {
+function tb_ajax_build_booking_dates() {
 
 	if (!check_ajax_referer('tb-admin-ajax-nonce','security', false)) {
 		echo '<h2>Security error loading data.  <br>Please Refresh the page and try again.</h2>';
@@ -18,28 +18,26 @@ function tf_ajax_build_booking_dates() {
 	wp_die();
 }
 
+function tb_ajax_run_amadeus_api() {
 
+	if (!check_ajax_referer('taste-booking-nonce','security', false)) {
+		echo '<h2>Security error loading data.  <br>Please Refresh the page and try again.</h2>';
+		wp_die();
+	}
+	if (!isset($_POST['api_form_data']) ) {
+		echo 'Missing api settings info';
+		wp_die();
+	}
 
-// function tf_ajax_set_trans_cron() {
+	$api_form_data = $_POST['api_form_data'];
 
-// 	if (!check_ajax_referer('tf-admin-ajax-nonce','security', false)) {
-// 		echo '<h2>Security error loading data.  <br>Please Refresh the page and try again.</h2>';
-// 		wp_die();
-// 	}
-// 	if (!isset($_POST['cron_on_off']) || !isset($_POST['frequency'])) {
-// 		echo 'Missing cron info';
-// 		wp_die();
-// 	}
+	require_once TBOOKING_PLUGIN_INCLUDES.'/api/run-amadeus-api.php';
+	run_amadeus_api($api_form_data);
 
-// 	$cron_on_off = $_POST['cron_on_off'];
-// 	$frequency = $_POST['frequency'];
-
-// 	require_once TFINANCIAL_PLUGIN_INCLUDES.'/ajax/set-trans-cron.php';
-// 	set_trans_cron($cron_on_off, $frequency);
-
-// 	wp_die();
-// }
+	wp_die();
+}
 
 if ( is_admin() ) {
-	add_action('wp_ajax_build_booking_dates','tf_ajax_build_booking_dates');
+	add_action('wp_ajax_build_booking_dates','tb_ajax_build_booking_dates');
+	add_action('wp_ajax_run_amadeus_api','tb_ajax_run_amadeus_api');
 }
