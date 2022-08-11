@@ -33,7 +33,7 @@ function tb_add_shortcodes() {
 add_action("init", "tb_add_shortcodes");
 
 if (is_admin()) {
-	require_once TBOOKING_PLUGIN_INCLUDES.'/metabox/product-metabox.php';
+	// require_once TBOOKING_PLUGIN_INCLUDES.'/metabox/product-metabox.php';
 // 	require_once TBOOKING_PLUGIN_INCLUDES.'/admin/admin-enqueues.php';
 // 	require_once TBOOKING_PLUGIN_INCLUDES.'/admin/list-pages/Taste_list_table.php';
 // 	require_once TBOOKING_PLUGIN_INCLUDES.'/admin/list-pages/transactions/tf-view-order-trans-page.php';
