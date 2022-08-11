@@ -8,8 +8,20 @@ Template Name: Test Amadeus API's
  * 	Author: Ron Boutilier
  */
 defined('ABSPATH') or die('Direct script access disallowed.');
+$admin = true;
+if ( !is_user_logged_in()) {
+	$admin = false;
+} else {
+	$user = wp_get_current_user();
+	$role = $user->roles[0];
+	if ('ADMINISTRATOR' !== strtoupper($role)) {
+		$admin = false;
+	}
+}
 
-
+if (!$admin) {
+	die("You must be an Admin to access this page.");
+}
 
 ?>
 <!DOCTYPE html>
