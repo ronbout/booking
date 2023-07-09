@@ -66,23 +66,25 @@ $hotel_rows = get_hotel_rows();
 // 	$ven_name = $hotel_info['name'];
 // 	$desc = $hotel_info['desc'];
 // 	$thumb_src = $hotel_info['thumbnail_src'];
-// 	?>
-// 		<div class="card text-center">
-// 			<div class="card-header">
-// 				Rating: <?php echo $rating ?>
-// 			</div>
-//   		<img width="200" height="200" src="<?php echo $thumb_src ?>" class="card-img-top" alt="Hotel Thumbnail Image">
-// 			<div class="card-body">
-// 				<h4 class="card-title"><?php echo $ven_name ?></h4>
-// 				<p class="card-text"><?php echo $desc ?></p>
-// 				<a href="#" class="btn btn-primary">See Deals</a>
-// 			</div>
-// 			<div class="card-footer text-muted">
-// 				Deals starting at &euro;240
-// 			</div>
-// 		</div>
-// 	<?php
+// 	
+/*
+ 		<div class="card text-center">
+ 			<div class="card-header">
+ 				Rating: <?php echo $rating ?>
+ 			</div>
+   		<img width="200" height="200" src="<?php echo $thumb_src ?>" class="card-img-top" alt="Hotel Thumbnail Image">
+ 			<div class="card-body">
+ 				<h4 class="card-title"><?php echo $ven_name ?></h4>
+ 				<p class="card-text"><?php echo $desc ?></p>
+ 				<a href="#" class="btn btn-primary">See Deals</a>
+ 			</div>
+ 			<div class="card-footer text-muted">
+ 				Deals starting at &euro;240
+ 			</div>
+ 		</div>
+ 	<?php
 // }
+*/
 
 function display_hotel_card($hotel_info) {
 	$rating = $hotel_info['Rating'];
